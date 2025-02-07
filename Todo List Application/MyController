@@ -1,0 +1,52 @@
+package com.listapp.todolistapp1;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+@RestController
+public class MyController {
+
+    UserService userService;
+
+    //save users data
+    @PostMapping("/users")
+    public ResponseEntity<User> saveUsers(@RequestBody User user) {
+        
+    return userService.save(user);
+    }
+
+  //get all users data
+    @GetMapping("/users/{id}")
+    public ResponseEntity<ResponseEntity<List<User>>> getUsers(@PathVariable int id) {
+        return ResponseEntity.ok(userService.findAll(id));
+    }
+
+//update users data
+    @PostMapping("/users/{userId,description}")
+    public String UpdateUser(@RequestBody  @RequestParam("userId") int userId ,@RequestParam("description") String description) {
+
+         return ResponseEntity.ok(userService.updateUser(userId,description)).toString();
+    }
+
+
+//delete user 
+    @PostMapping("/users/{userId}")
+    public ResponseEntity<Object> deleteUser(@RequestBody  @RequestParam("userId") int userId) {
+       
+        
+        return ResponseEntity.ok(userService.deleteUser(userId));
+    }
+    
+
+}
